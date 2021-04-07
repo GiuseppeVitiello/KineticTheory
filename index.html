@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="particle.js"></script>
+    <script src="sketch.js"></script>
+
+    <title>Simulation</title>
+
+    <link rel="stylesheet" href="index.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+</head>
+
+<body>
+
+    <ul id="nav">
+        <li><a href="#intro">Teoria dei gas</a></li>
+        <li><a href="#force">Forza di un urto</a></li>
+        <li><a href="#mean">Velocità media</a></li>
+        <li><a href="#press">Pressione del gas</a></li>
+        <li><a href="#heat">Energia cinetica e temperatura</a></li>
+        <li><a href="#vqm">Velocità quadratica media</a></li>
+        <li><a href="#maxdist">Distribuzione maxwelliana</a></li>
+        <li><a href="#lcm">Libero cammino medio</a></li>
+        <li><a href="#energy">Equipartizione dell'energia</a></li>
+    </ul>
+
+    <div id="container">
+
+        <div class="expl" id="intro">
+            <h2>La teoria cinetica dei gas</h2>
+            Analisi dei gas dal punto di vista microscopico
+            <h4>Ipotesi</h4>
+            <ol>
+                <li>Il numero di molecole di gas è molto elevato</li>
+                <li>Le molecole sono approssimate a sfere perfette, rigide e identiche tra di loro</li>
+                <li>La densità del gas è costante</li>
+                <li>Le sfere sono molto piccole, al fine di trascurare gli effetti della rotazione e degli urti
+                    reciproci</li>
+                <li>Le forze intermolecolari sono trascurabili. In assenza di forze, ciascuna particella si muove di
+                    moto rettilineo uniforme</li>
+                <li>Ogni direzione è equiprobabile, e la velocità di ciascuna particella può assumere tutti i valori da
+                    0 alla velocità della luce</li>
+                <li>Le pareti del contenitore sono perfettamente lisce, e gli urti delle particelle contro di esse sono
+                    perfettamente elastici</li>
+            </ol>
+            <br>
+            Tutte le ipotesi sono rispettate dalla simulazione che vedete a destra.
+
+        </div>
+
+        <div class="expl" id="force">
+            <h2>Forza di un urto contro una parete</h2>
+
+            Operiamo su un volumetto di gas &Delta;V = d³
+            <br><br>
+            Analizziamo un urto di una particella contro una parete, limitandoci al caso unidimensionale
+
+            Dal teorema dell'impulso abbiamo:
+
+            \begin{equation}
+            I_x = F'_x·\Delta t = \Delta q_x
+            \end{equation}
+
+            Calcoliamo quindi la quantità di moto
+
+            \begin{equation}
+            \Delta q_x = q_f - q_i = -mv_x - (+mv_x) = -2mv_x
+            \end{equation}
+
+            Dalle due equazioni otteniamo:
+
+            \begin{equation}
+            F'_x = \frac{\Delta q_x}{\Delta t} = -\frac{2mv_x}{\Delta t}
+            \end{equation}
+
+            che è la forza della parete su una data particella. Cambiando il segno, otteniamo la forza della particella
+            sulla parete:
+
+            \begin{equation}
+            F_x = \frac{2mv_x}{\Delta t}
+            \end{equation}
+
+            <br>
+
+            &Delta;t non è che l'intervallo di tempo tra due urti consecutivi, ossia:
+            \begin{equation}
+            \Delta t = \frac{s}{v_x} = \frac{2d}{v_x}
+            \end{equation}
+
+            dove d è la distanza tra una parete e l'altra. L'equazione per la forza ricavata diventa quindi:
+
+            \begin{equation}
+            F_x = \frac{2mv_x}{\Delta t} = \frac{2mv_x}{\frac{2d}{v_x}} = \frac{mv^2_x}{d}
+            \end{equation}
+
+            Volendo ricavare la forza esercitata da tutte le particelle all'interno del volumetto, basta moltiplicare la
+            forza per il numero di particelle &Delta;N
+
+            \begin{equation}
+            F_{x,tot} = \Delta N·F_x = \Delta N\frac{mv^2_x}{d}
+            \end{equation}
+
+            <p class="value">F<sub>x</sub> = </p>
+            <p class="value">F<sub>x,tot</sub> = </p>
+
+        </div>
+
+        <div class="expl" id="mean">
+            <h2>Generalizzazione</h2>
+            Le equazioni precedenti non tengono in considerazione due cose:
+            <h4>Le molecole non hanno la stessa velocità</h4>
+            Per ovviare a questo problema, useremo nelle formule il valore medio del quadrato della velocità
+
+            \begin{equation}
+            v^2_x \rightarrow \bar{v^2_x}
+            \end{equation}
+
+            \begin{equation}
+            \bar{v^2_x} = \frac{\sum_i v^2_{ix}}{\Delta N} = \frac{v^2_{1x}+v^2_{2x}···v^2_{\Delta N x}}{\Delta N}
+            \end{equation}
+
+            La formula per la forza di un urto diventa quindi:
+
+            \begin{equation}
+            F_{x,tot} = \Delta N·F_x = \Delta N\frac{mv^2_x}{d} = \Delta N\frac{m\bar{v^2_x}}{d}
+            \end{equation}
+
+            <h4>Gli urti non sono unidimensionali</h4>
+            Dal momento che abbiamo a che fare con 3 dimensioni, sappiamo che il vettore velocità è:
+
+            \begin{equation}
+            \vec{v} = \vec{v_x} + \vec{v_y} + \vec{v_z} \Rightarrow v^2 = v^2_x + v^2_y + v^2_z
+            \end{equation}
+
+            La definizione rimane la stessa anche utilizzando la media:
+
+            \begin{equation}
+            \bar{v^2} = \bar{v^2_x} + \bar{v^2_y} + \bar{v^2_z}
+            \end{equation}
+
+            Dal momento che tutte le direzioni sono equiprobabili, possiamo scrivere:
+
+            \begin{equation}
+            \bar{v^2_x} = \bar{v^2_y} = \bar{v^2_z} \Rightarrow \bar{v^2} = 3\bar{v^2_x} \Rightarrow \bar{v^2_x} =
+            \frac{\bar{v^2}}{3}
+            \end{equation}
+
+            La formula per calcolare la forza totale può essere scritta come:
+
+            \begin{equation}
+            F_{tot} = \frac{\Delta N}{3}\frac{m\bar{v^2}}{d}
+            \end{equation}
+
+            <p class="value">v<sup>2</sup><sub>m</sub> = </p>
+            <p class="value">F<sub>tot</sub> = </p>
+
+        </div>
+
+        <div class="expl" id="press">
+            <h2>La pressione del gas</h2>
+            Dalle equazioni precedenti, possiamo finalmente trovare la pressione del gas:
+
+            \begin{cases}
+            F_{tot} = \frac{\Delta N}{3}\frac{m\bar{v^2}}{d} \\ S = d^2
+            \end{cases}
+
+            \begin{equation}
+            \Rightarrow p = F/S = \frac{\Delta N}{3}\frac{m\bar{v^2}}{d}·\frac{1}{d^2}
+            \end{equation}
+
+            \begin{equation}
+            \Rightarrow p = \frac{\Delta N}{3}\frac{m\bar{v^2}}{d^3} = \frac{1}{3}\frac{\Delta N}{V}m\bar{v^2}
+            \end{equation}
+
+            E dal momento che:
+
+            \begin{equation}
+            \bar{E_C} = \frac{1}{2}m\bar{v^2}
+            \end{equation}
+
+            La pressione può essere riscritta come:
+            \begin{equation}
+            p = \frac{2}{3}\frac{N}{V}\bar{E_C}
+            \end{equation}
+
+            <p class="value">E<sub>Cm</sub> = </p>
+            <p class="value">p = </p>
+
+        </div>
+
+        <div class="expl" id="heat">
+            <h2>Relazione tra temperatura ed energia cinetica</h2>
+            Partiamo dall'equazione ricavata precedentemente e dall'equazione di stato dei gas perfetti:
+
+            \begin{cases}
+            pV = Nk_BT \\ p = \frac{2}{3}\frac{N}{V}\bar{E_C}
+            \end{cases}
+
+            \begin{equation}
+            Nk_BT = \frac{2}{3}\frac{N}{V}\bar{E_C} \Rightarrow \frac{2}{3}\bar{E_C} = k_BT
+            \end{equation}
+
+            La temperatura assoluta del gas è quindi:
+
+            \begin{equation}
+            T = \frac{2}{3k_B}\bar{E_C}
+            \end{equation}
+
+            L'energia cinetica media per singola particella è invece:
+
+            \begin{equation}
+            \bar{E_C} = \frac{3}{2}k_BT
+            \end{equation}
+
+            Considerando l'intero sistema, l'equazione diventa
+
+            \begin{equation}
+            \bar{E_C} = \frac{3}{2}Nk_BT = \frac{3}{2}nRT
+            \end{equation}
+
+            <p class="value">T = </p>
+            <p class="value">E<sub>Cm,tot</sub> = </p>
+
+        </div>
+
+        <div class="expl" id="vqm">
+            <h2>La velocità quadratica media</h2>
+            La velocità quadratica media è definita come
+
+            \begin{equation}
+            v_{qm} = \sqrt{\bar{v^2}}
+            \end{equation}
+
+            Possiamo sostituire questa definizione nella formula per l'energia cinetica
+
+            \begin{equation}
+            \bar{E_C} = \frac{1}{2}m\bar{v^2} = \frac{1}{2}mv^2_{qm}
+            \end{equation}
+
+            In questo modo possiamo trovare un'altra formula per la velocità quadratica media
+
+            \begin{cases}
+            \bar{E_C} = \frac{1}{2}mv^2_{qm} \\ \bar{E_C} = \frac{3}{2}k_BT
+            \end{cases}
+
+            \begin{equation}
+            v_{qm} = \sqrt{\frac{3k_BT}{m}} = \sqrt{\frac{3RT}{M}}
+            \end{equation}
+
+            <p class="value">v<sub>qm</sub> = </p>
+
+        </div>
+
+        <div class="expl" id="maxdist">
+            <h2>La distribuzione maxwelliana delle velocità</h2>
+            Basandosi sulle ipotesi della teoria cinetica dei gas, i fisici Maxwell e Boltzmann riuscirono per primi a
+            calcolare la distribuzione delle velocità
+            <br><br>
+            Se si indica con &Delta;N<sub>v</sub> il numero di particelle con una velocità compresa tra i valori v e
+            v+&Delta;v, il rapporto &Delta;N<sub>v</sub> /&Delta;v rappresenta il numero di particelle per intervallo
+            unitario di velocità
+            <br><br>
+            La funzione di "Distribuzione maxwelliana delle velocità" è piuttosto complessa:
+
+            \begin{equation}
+            \frac{\Delta N_v}{\Delta v} =
+            \frac{4N}{\sqrt{\pi}}\left(\frac{m}{2k_BT}\right)^\frac{3}{2}v^2e^{-\frac{mv^2}{2k_BT}}
+            \end{equation}
+
+            Essendo di tale difficoltà, la dimostrazione non è inclusa in questa pagina, ma potete trovarla
+            <a href="proof/proof.html">qui</a>.
+            <br>
+
+            In questa equazione sono presenti molte variabili:
+            <br><br>
+            N - numero di particelle in una storia
+            <br>
+            m - massa della particella
+            <br>
+            T - temperatura all'equilibrio
+            <br>
+            e - numero di Eulero (e &approx; 2.71828...)
+            <br>
+            k<sub>B</sub> - costante di Boltzmann
+            <br><br>
+            Ecco come si presenta il grafico della distribuzione maxwelliana:
+            <br><br>
+            <img src="desmos-graph.png" alt="Grafico a campana">
+            <br><br>
+            Come si può vedere, la velocità più probabile per una particella coincide con il massimo della funzione
+            sovracitata, e il valore medio della velocità è compreso tra la velocità quadratica media e la velocità più
+            probabile. Inoltre, all'aumentare della temperatura, la velocità più probabile diminuisce.
+            <br><br>
+            Le particelle che vedete muoversi nella simulazione possono presentare due distribuzioni: quella di Maxwell
+            e quella uniforme, tipica delle funzioni random() di qualsiasi linguaggio di programmazione
+        </div>
+
+        <div class="expl" id="lcm">
+
+            <h2>Il libero cammino medio</h2>
+
+            Finora abbiamo trascurato gli urti reciproci tra particelle. Il libero cammino medio indica la distanza che
+            una particella può percorrere senza incontrarne un'altra, urtandola.
+            Dal momento che le particelle sono tutte sfere identiche e distinguibili, la distanza tra i centri di due
+            particelle che urtano tra di loro sarà:
+
+            \begin{equation}
+            s = 2r
+            \end{equation}
+
+            Questa distanza definirà una sezione d'urto &sigma;:
+
+            \begin{equation}
+            \sigma = \pi s^2 = \pi (2r)^2 = 4\pi r^2
+            \end{equation}
+
+            E infine, muovendosi la particella con velocità media v in un intervallo di tempo &Delta;t, otterremo il
+            volume di un cilindro che indica la parte di spazio all'interno della quale una particella può urtare le
+            altre:
+
+            \begin{equation}
+            \Delta V = \sigma (\bar{v}\Delta t) = 4\pi r^2\bar{v}\Delta t
+            \end{equation}
+
+            Il numero di particelle all'interno di &Delta;V ci da un'idea del numero di urti avvenuti. Ponendo
+            n<sub>V</sub>, ossia N/V, il numero di particelle per unità di volume, allora il numero di urti sarà:
+
+            \begin{equation}
+            n_V\Delta V = 4\pi r^2\bar{v}\Delta tn_V
+            \end{equation}
+
+            Se dividiamo lo spazio percorso dalla particella in esame per il numero di urti che avvengono con essa in
+            quello spazio, otteniamo il libero cammino medio, ossia la distanza media che la particella può percorrere
+            senza che un urto avvenga.
+
+            \begin{equation}
+            \bar{l} = \frac{\bar{v}\Delta t}{4n_V\pi r^2\bar{v}\Delta t} = \frac{1}{4\pi n_Vr^2}
+            \end{equation}
+
+            Il numero di collisioni al secondo può essere ottenuto dividento la velocità quadratica media per il libero
+            cammino medio:
+
+            \begin{equation}
+            C/s = \frac{v_{qm}}{\bar{l}}
+            \end{equation}
+
+            <p class="value">&sigma; = </p>
+            <p class="value">l<sub>cm</sub> = </p>
+            <p class="value">C<sub>/s</sub> = </p>
+
+        </div>
+
+        <div class="expl" id="energy">
+            <h2>L'equipartizione dell'energia</h2>
+            Abbiamo già detto che l'energia cinetica totale del gas è espressa dalla formula:
+
+            \begin{equation}
+            \bar{E_C} = \frac{3}{2}k_BT
+            \end{equation}
+
+            Per via delle ipotesi, in particolare "Ogni direzione è equiprobabile", possiamo dire che:
+
+            \begin{equation}
+            \bar{v^2_x} = \frac{\bar{v^2}}{3} \Rightarrow \bar{v^2} = 3\bar{v^2_x}
+            \end{equation}
+
+            Quindi l'energia cinetica può essere espressa anche come:
+
+            \begin{equation}
+            \bar{E_C} = \frac{1}{2}m\bar{v^2} = \frac{3}{2}m\bar{v^2_x} = \frac{3}{2}k_BT
+            \end{equation}
+
+            Che, semplificando, diventa:
+            \begin{equation}
+            \frac{1}{2}m\bar{v_x^2} = \frac{1}{2}k_BT
+            \end{equation}
+
+            Possiamo fare lo stesso ragionamento con le altre direzioni; in questo modo, otteniamo che:
+
+            \begin{array}{rcl}
+            \frac{1}{2}m\bar{v_x^2} = \frac{1}{2}k_BT \\
+            \frac{1}{2}m\bar{v_y^2} = \frac{1}{2}k_BT \\
+            \frac{1}{2}m\bar{v_z^2} = \frac{1}{2}k_BT
+            \end{array}
+
+            In generale, ogni grado di libertà che aggiungiamo al sistema contribuisce all'energia cinetica di
+            quest'ultimo per un fattore di &half;k<sub>B</sub>T
+            <br>
+            Se, quindi, lasciamo il sistema libero di ruotare, aggiungendo due gradi di libertà (&vartheta; e &phi;),
+            l'energia cinetica totale diventerà:
+
+            \begin{equation}
+            \bar{E_C} = \frac{5}{2}k_BT
+            \end{equation}
+
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <title>Proof</title>
+
+    <link rel="stylesheet" href="index.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+</head>
+
+<body>
+    <div id="container">
+
+        <h2>Dimostrazione della distribuzione maxwelliana delle velocità</h2>
+
+        In un volumetto di N molecole, trovare P(v), la probabilità che la velocità di una certa particella sia compresa tra v e v+dv. In altri termini:
+
+        \begin{equation}
+        P(v) : v \in [v, v+dv]
+        \end{equation}
+    
+        \begin{equation}
+        dv = dv_x·dv_y·dv_z
+        \end{equation}
+
+        Derivando P(v) rispetto a v otterremo una funzione &psi; in termini delle componenti della velocità:
+
+        \begin{equation}
+        \frac{d^3P}{dv_xdv_ydv_z} = \psi(v_x, v_y, v_z)
+        \end{equation}
+
+        La funzione &psi; è definita in termini delle componenti della velocità. Dal momento che esse sono indipendenti, la funzione può essere scritta come:
+
+        \begin{equation}
+        \psi(v_x, v_y, v_z) = f(v_x)g(v_y)h(v_z)
+        \end{equation}
+
+        E, dato che tutte le direzioni sono equiprobabili, f = g = h:
+
+        \begin{equation}
+        \psi(v_x, v_y, v_z) = f(v_x)g(v_y)h(v_z) = f(v_x)f(v_y)f(v_z)
+        \end{equation}
+
+        A questo punto, usiamo il logaritmo naturale su entrambi i lati dell'equazione, e successivamente la deriviamo implicitamente:
+
+        \begin{equation}
+        ln(\psi(v)) = ln(f(v_x)) + ln(f(v_y)) + ln(f(v_z)) \\
+        \end{equation}
+        
+        \begin{equation}
+        \frac{\psi'(v)}{\psi(v)}dv = \frac{f'(v_x)}{f(v_x)}dv_x + \frac{f'(v_y)}{f(v_y)}dv_y + \frac{f'(v_z)}{f(v_z)}dv_z
+        \end{equation}
+
+        Un'altra delle ipotesi della teoria cinetica è l'assenza di forze intermolecolari, che permettono alle particelle di avere una velocità costante:
+
+        \begin{equation}
+        |v| = k \Rightarrow dv = 0 \\
+        \end{equation}
+
+        Questa condizione porterà a due equazioni:
+        
+        \begin{equation}
+        \frac{f'(v_x)}{f(v_x)}dv_x + \frac{f'(v_y)}{f(v_y)}dv_y + \frac{f'(v_z)}{f(v_z)}dv_z = 0
+        \end{equation}
+
+        \begin{equation}
+        0 = dv^2 = 2vdv = 2(v_xdv_x + v_ydv_y + v_zdv_z)
+        \end{equation}
+
+        Le due equazioni devono verificarsi contemporaneamente. Per trovare una soluzione, dobbiamo risolvere questo sistema di equazioni:
+
+        \begin{cases}
+        \frac{f'(v_x)}{f(v_x)} = av_x \\
+        \frac{f'(v_y)}{f(v_y)} = av_y \\
+        \frac{f'(v_z)}{f(v_z)} = av_z
+        \end{cases}
+
+        Integrando ciascuna delle tre equazioni, otteniamo:
+
+        \begin{cases}
+        ln(f(v_x)) = \frac{a}{2}v^2_x+B_x \\
+        ln(f(v_y)) = \frac{a}{2}v^2_y+B_y \\
+        ln(f(v_z)) = \frac{a}{2}v^2_z+B_z
+        \end{cases}
+
+        E, semplificando il logaritmo naturale:
+
+        \begin{cases}
+        f(v_x) = A_xe^{\frac{a}{2}v^2_x} \\
+        f(v_y) = A_ye^{\frac{a}{2}v^2_y} \\
+        f(v_z) = A_ze^{\frac{a}{2}v^2_z} \\
+        \\
+        A_{x,y,z} = e^{B_{x,y,z}}
+        \end{cases}
+
+        Notiamo che a deve necessariamente essere minore di 0: se non lo fosse, la velocità e quindi la temperatura del sistema continuerebbero ad aumentare. Possiamo quindi stabilire che:
+
+        \begin{equation}
+        \frac{a}{2} = -\alpha^2
+        \end{equation}
+
+        L'area al di sotto di una curva di probabilità deve necessariamente essere 1:
+
+        \begin{equation}
+        1 = \int_{-\infty}^{\infty} f(u)du = A\int_{-\infty}^{\infty} e^{-\alpha^2u^2}du = A\frac{\sqrt{\pi}}{\alpha}
+        \end{equation}
+    
+        Essendo il risultato di questo integrale indipendente dalla direzione scelta, possiamo scrivere che:
+
+        \begin{equation}
+        A_x = A_y = A_z = \frac{\alpha}{\sqrt{\pi}}
+        \end{equation}
+
+        Tornando quindi all'equazione differenziale iniziale,
+
+        \begin{equation}
+        \frac{d^3P}{dv_xdv_ydv_z} = \psi(v_x, v_y, v_z) = f(v_x)f(v_y)f(v_z)
+        \end{equation}
+
+        possiamo riscriverla in questo modo:
+
+        \begin{equation}
+        \frac{d^3P}{dv_xdv_ydv_z} = \frac{\alpha^3}{\pi^{\frac{3}{2}}}e^{-\alpha^2(v^2_x+v^2_y+v^2_z)} = \frac{\alpha^3}{\pi^{\frac{3}{2}}}e^{-\alpha^2v^2}
+        \end{equation}
+
+        Moltiplicando entrambi i lati per i differenziali:
+        
+        \begin{equation}
+        d^3P = \frac{\alpha^3}{\pi^{\frac{3}{2}}}e^{-\alpha^2v^2}dv_xdv_ydv_z
+        \end{equation}
+
+        Procediamo quindi ad un cambio di coordinate, da cartesiane a polari:
+
+        \begin{equation}
+        dv_xdv_ydv_z \rightarrow \textbf{J}dvd\vartheta d\varphi
+        \end{equation}
+
+        Le coordinate sono legate tra loro nella seguente maniera:
+
+        \begin{cases}
+        v_x = vsin(\vartheta)cos(\varphi) \\
+        v_y = vsin(\vartheta)sin(\varphi) \\
+        v_z = vcos(\vartheta)
+        \end{cases}
+
+        Possiamo così calcolare la matrice Jacobiana:
+
+        \begin{equation}
+        \textbf{J} = 
+        \begin{vmatrix}
+        \frac{\partial v_x}{\partial v} & \frac{\partial v_x}{\partial \vartheta} & \frac{\partial v_x}{\partial \varphi} \\
+        \frac{\partial v_x}{\partial v} & \frac{\partial v_y}{\partial \vartheta} & \frac{\partial v_y}{\partial \varphi} \\
+        \frac{\partial v_x}{\partial v} & \frac{\partial v_z}{\partial \vartheta} & \frac{\partial v_z}{\partial \varphi}
+        \end{vmatrix}
+        \end{equation}
+
+        \begin{equation}
+        \textbf{J} = 
+        \begin{vmatrix}
+        sin(\vartheta)cos(\varphi) & vcos(\vartheta)cos(\varphi) & -vsin(\vartheta)sin(\varphi) \\
+        sin(\vartheta)sin(\varphi) & vcos(\vartheta)sin(\varphi) & vsin(\vartheta)cos(\varphi) \\
+        cos(\vartheta) & -vsin(\vartheta) & 0
+        \end{vmatrix}
+        \end{equation}
+
+        \begin{array}{ccc}
+        = vsin(\vartheta)(sin(vsin^2(\vartheta)cos^2(\varphi) + vsin^2(\vartheta)sin^2(\varphi)) \\
+        + cos(\vartheta)(v^2sin(\vartheta)cos(\vartheta)cos^2(\varphi) + v^2sin(\vartheta)cos(\vartheta)sin^2(\varphi))
+        \end{array}
+
+        \begin{array}{ccc}
+        = v^2sin^3(\vartheta)cos^2(\varphi) + v^2sin^3(\vartheta)sin^2(\varphi) \\
+        + v^2sin(\vartheta)cos(\vartheta)cos^2(\varphi) + v^2sin(\vartheta)cos^2(\vartheta)sin^2(\varphi)
+        \end{array}
+
+        \begin{equation}
+        = v^2sin^3(\vartheta) + v^2sin^2(\vartheta)cos^2(\vartheta) = v^2sin(\vartheta)
+        \end{equation}
+
+        \begin{array}{ccc}
+        \Rightarrow dv_xdv_ydv_z = v^2sin(\vartheta)dvd\vartheta d\varphi \\
+        0 \leq \vartheta \leq \pi \\
+        0 \leq \varphi \leq 2\pi 
+        \end{array}
+
+        La nostra equazione così trasformata diventa:
+
+        \begin{equation}
+        d^3P(v) = v^2\frac{\alpha^3}{\pi^{\frac{3}{2}}}e^{-\alpha^2v^2}dvsin(\vartheta)d\vartheta d\varphi
+        \end{equation}
+
+        Possiamo adesso integrare su d&vartheta; e su d&phi;, ottenendo:
+
+        \begin{equation}
+        dP(v) = v^2\frac{\alpha^3}{\pi^{\frac{3}{2}}}e^{-\alpha^2v^2}dv\int_{0}^{\pi} sin(\vartheta)d\vartheta \int_{0}^{2\pi} d\varphi
+        \end{equation}
+
+        Il risultato del primo integrale è 2, mentre il risultato del secondo è 2&pi;. La nostra equazione diventa:
+
+        \begin{equation}
+        dP(v) = 4v^2\frac{\alpha^3}{\sqrt{\pi}}e^{-\alpha^2v^2}dv
+        \end{equation}
+
+        Indichiamo con N(v) la funzione che ha come risultato il numero di particelle che hanno velocità v. Essa è definita come:
+
+        \begin{equation}
+        N(v) = N·P(v) = \frac{4N\alpha^3}{\sqrt{\pi}}v^2e^{-\alpha^2v^2}
+        \end{equation}
+
+        A questo punto non resta che risolvere per &alpha;. Possiamo farlo prendendo in considerazione la formula per la velocita al quadrato media:
+
+        \begin{equation}
+        \bar{v^2} = \frac{\int_{0}^{\infty} N(v)v^2 dv}{N} = \frac{4\alpha^3}{\sqrt{\pi}}\int_{0}^{\infty} v^4e^{-\alpha^2v^2} dv
+        \end{equation}
+
+        Questo integrale è facilmente risolvibile utilizzando la formula:
+
+        \begin{equation}
+        \int_{0}^{\infty} x^{2n}e^{-kx^2} dx = \frac{(2n-1)!!}{2^{n+1}k^n}\sqrt{\frac{\pi}{k}}
+        \end{equation}
+
+        \begin{equation}
+        \Rightarrow \bar{v^2} = \frac{4\alpha^3}{\sqrt{\pi}} \frac{3!!}{2^3\alpha^4} \frac{\sqrt{\pi}}{\alpha} = \frac{3}{2\alpha^2}
+        \end{equation}
+
+        Possiamo usare la relazione tra energia cinetica e temperatura per ricavare &alpha; in funzione della temperatura e della massa:
+
+        \begin{equation}
+        \bar{v^2} = \frac{3}{2\alpha^2} = \frac{3k_BT}{m} \Rightarrow \alpha = \sqrt{\frac{m}{2k_BT}}
+        \end{equation}
+
+        E infine, sostituiamo &alpha; nella formula precedente e moltiplichiamo entrambi i lati per N:
+
+        \begin{equation}
+        \frac{dP(v)}{dv} = \frac{4}{\sqrt{\pi}} \left( \frac{m}{2k_BT} \right)^{\frac{3}{2}} v^2 e^{-\frac{m}{2k_BT}v^2}
+        \end{equation}
+
+        \begin{equation}
+        \Rightarrow \frac{dN(v)}{dv} = \frac{4N}{\sqrt{\pi}} \left( \frac{m}{2k_BT} \right)^{\frac{3}{2}} v^2 e^{-\frac{m}{2k_BT}v^2}
+        \end{equation}
+
+        \begin{equation}
+        \tag*{□}
+        \end{equation}
+    </div>
+</body>
+
+</html>

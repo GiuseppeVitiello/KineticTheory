@@ -1,0 +1,60 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    font-family: 'Product Sans';
+}
+
+main {
+    top: 17%;
+    left: 65%;
+    position: fixed;
+}
+
+#container {
+    margin-top: 100px;
+    margin-left: 20px;
+    width: 61%;
+}
+
+img {
+    width: 400px;
+    height: 400px;
+}
+
+#nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(11, 11, 11, 0.5);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+  
+#nav li {
+    float: left;
+}
+  
+#nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+  
+#nav li a:hover {
+    background-color: rgba(17, 17, 17, 0.7);
+}
+
+.expl {
+    padding-top: 100px;
+    padding-bottom: 200px;
+}
